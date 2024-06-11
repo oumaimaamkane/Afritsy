@@ -99,7 +99,7 @@ function Footer() {
                                     <a href="javascript:;"
                                         className="p-3 rounded-full bg-white text-gray-700 group transition-all duration-500 hover:bg-amber-500 hover:text-white focus-within:outline-0 focus-within:bg-amber-500 focus-within:text-white">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                            <path fillRule="evenodd" clipRule="evenodd"
                                                 d="M15.9326 5.13919C16.5664 5.31036 17.0646 5.80978 17.233 6.44286C17.5394 7.59178 17.5394 9.99044 17.5394 9.99044C17.5394 9.99044 17.5394 12.3891 17.233 13.538C17.0623 14.1734 16.5641 14.6729 15.9326 14.8417C14.7866 15.1489 10.1886 15.1489 10.1886 15.1489C10.1886 15.1489 5.59296 15.1489 4.44462 14.8417C3.81082 14.6705 3.31266 14.1711 3.14427 13.538C2.83789 12.3891 2.83789 9.99044 2.83789 9.99044C2.83789 9.99044 2.83789 7.59178 3.14427 6.44286C3.315 5.80744 3.81316 5.30801 4.44462 5.13919C5.59296 4.83203 10.1886 4.83203 10.1886 4.83203C10.1886 4.83203 14.7866 4.83203 15.9326 5.13919ZM12.539 9.99044L8.71982 12.2015V7.77936L12.539 9.99044Z"
                                                 fill="currentColor" />
                                         </svg>
