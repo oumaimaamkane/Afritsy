@@ -1,59 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-// import Home from './pages/Home.jsx';
-// import Login from './pages/Login.jsx';
-// import NotFound from './pages/NotFound.jsx';
-// import About from './pages/About.jsx';
-// import Project from './pages/Project.jsx';
-// import Contact from './pages/Contact.jsx';
-// import Dashboard from './pages/Dashboard.jsx';
-// import Logout from './pages/Logout.jsx';
-// import SinglePageProject from './pages/SinglePageProject.jsx'
-
-// function App() {
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-//   const [email, setEmail] = useState('');
-
-//   useEffect(() => {
-//     const token = sessionStorage.getItem('token');
-//     if (token) {
-//       setIsLoggedIn(true);
-//       const storedEmail = sessionStorage.getItem('email');
-//       if (storedEmail) {
-//         setEmail(storedEmail);
-//       }
-//     } else {
-//       setIsLoggedIn(false);
-//       setEmail('');
-//     }
-//   }, []);
-
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         {/* Public Routes */}
-//         <Route path="/" element={<Home />} />
-//         <Route path="/about" element={<About />} />
-//         <Route path="/project" element={<Project />} />
-//         <Route path="/contact" element={<Contact />} />
-//         <Route path="/SinglePageProject" element={<SinglePageProject />} />
-//         <Route path="/login" element={!isLoggedIn ? <Login setIsLoggedIn={setIsLoggedIn} setEmail={setEmail} /> : <Navigate to="/" />} />
-//         <Route path="*" element={<NotFound />} />
-
-//         {/* Private Routes */}
-//         <Route path="/dashboard" element={isLoggedIn ? <Dashboard email={email} /> : <Navigate to="/login" />} />
-//         <Route path="/logout" element={<Logout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setEmail={setEmail} />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
-
-
-
-
-
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/Home.jsx';
@@ -75,6 +19,7 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(true);  // <-- Added this line
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -85,7 +30,10 @@ const AuthProvider = ({ children }) => {
         setEmail(storedEmail);
       }
     }
+    setIsLoading(false);  // <-- Added this line
+
   }, []);
+
 
   const login = (email, token) => {
     setIsLoggedIn(true);
@@ -102,7 +50,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, email, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, email, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
@@ -111,8 +59,19 @@ const AuthProvider = ({ children }) => {
 const useAuth = () => useContext(AuthContext);
 
 const ProtectedRoute = ({ element }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn , isLoading} = useAuth();
+  if (isLoading) {  // <-- Added this condition
+    return <p>Loading...</p>;  // <-- Added this line
+  }
   return isLoggedIn ? element : <Navigate to="/login" />;
+};
+
+const LoginRoute = ({ element }) => {
+  const { isLoggedIn, isLoading } = useAuth();
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+  return isLoggedIn ? <Navigate to="/dashboard" /> : element;
 };
 
 function App() {
@@ -126,7 +85,9 @@ function App() {
           <Route path="/project" element={<Project />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/SinglePageProject" element={<SinglePageProject />} />
-          <Route path="/login" element={<Login />} />
+          
+          <Route path="/login" element={<LoginRoute element={<Login />} />} />  
+
           <Route path="*" element={<NotFound />} />
 
           {/* Private Routes */}

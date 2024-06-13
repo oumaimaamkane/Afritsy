@@ -4,7 +4,7 @@ function Hero() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#FFEEC2]">
       <div className="grid md:grid-cols-2 items-center md:gap-8 gap-6 font-[sans-serif] text-[#333] max-w-5xl">
-        <div className="order-2 md:order-1 text-center md:text-left animate-fade-in">
+        <div className="m-3 order-2 md:order-1 text-center md:text-left animate-fade-in">
           <h2 className="text-3xl md:text-4xl leading-10 font-extrabold text-[#333]">
             Lorem ipsum dolor sit amet
           </h2>

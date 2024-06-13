@@ -7,6 +7,8 @@ function Header() {
   const location = useLocation();
   const { isLoggedIn } = useAuth();
 
+  console.log('isLoggedIn:', isLoggedIn); // Add this line
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -71,10 +73,11 @@ function Header() {
             <li className="max-lg:border-b max-lg:py-3 relative lg:after:absolute lg:after:bg-white lg:after:w-full lg:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
               <NavLink to="/contact" className={`text-black block text-[15px] font-medium ${location.pathname === "/contact" ? "border-[#FFB600] border-b-2" : ""}`}>Contact</NavLink>
             </li>
-            <li className="max-lg:border-b max-lg:py-3 relative lg:after:absolute lg:after:bg-white lg:after:w-full lg:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
             {isLoggedIn && (
-            <NavLink to="/dashboard" className="text-black text-sm max-sm:my-2">Dashboard</NavLink>)}
-            </li>
+                <li>
+                  <NavLink to="/dashboard" className={`text-black block text-sm font-medium ${location.pathname === "/dashboard" ? "border-[#FFB600] border-b-2" : ""}`}>Dashboard</NavLink>
+                </li>
+              )}
           </ul>
         </div>
 

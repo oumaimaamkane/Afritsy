@@ -1,33 +1,32 @@
-import { useNavigate } from "react-router-dom";
-import { logout } from "../API/Auth";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../API/Auth.js';
 
+function Logout({ isLoggedIn, setIsLoggedIn, setEmail }) {
+  const navigate = useNavigate();
 
-export default function Logout({ isLoggedIn, setIsLoggedIn, setEmail }) {
-    const navigate = useNavigate();
-    const token = localStorage.getItem('token');
-
-    let LogOut = async () => {
-        try {
-            const response = await logout(token);
-            console.log(response.data);
-            if (response.data.status) {
-                localStorage.clear();
-                setIsLoggedIn(false);
-                setEmail('');
-                navigate('/login');
-            } else {
-                console.log(response.data.message);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    if (!isLoggedIn || !token) {
-        navigate('/login');
+  useEffect(() => {
+    if (isLoggedIn) {
+      const token = sessionStorage.getItem('token');
+      if (token) {
+        logout(token)
+          .then(() => {
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('email');
+            setIsLoggedIn(false);
+            setEmail('');
+            navigate('/login');
+          })
+          .catch((error) => {
+            console.error('Error logging out:', error);
+          });
+      }
     } else {
-        LogOut(); 
+      navigate('/login');
     }
-    
-    return null;
+  }, [isLoggedIn, setIsLoggedIn, setEmail, navigate]);
+
+  return null;
 }
+
+export default Logout;

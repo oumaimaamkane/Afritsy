@@ -24,18 +24,20 @@ use App\Http\Controllers\Api\Auth\AuthController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('cors')->group(function(){
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('auth/login', 'login');
+        Route::post('auth/logout', 'logout')->middleware('auth:sanctum');
+    });
+    
+    // CRUD routes for various resources, protected by Sanctum middleware
+    Route::middleware('auth:sanctum')->prefix('crud')->group(function () {
+        Route::apiResource('projects', ProjectController::class);
+        Route::apiResource('pays', PayController::class);
+        Route::apiResource('services', ServiceController::class);
+        Route::apiResource('membres', MembreController::class);
+    });
 
+});
 // Authentication routes
-Route::controller(AuthController::class)->group(function () {
-    Route::post('auth/login', 'login');
-    Route::post('auth/logout', 'logout')->middleware('auth:sanctum');
-});
-
-// CRUD routes for various resources, protected by Sanctum middleware
-Route::middleware('auth:sanctum')->prefix('crud')->group(function () {
-    Route::apiResource('projects', ProjectController::class);
-    Route::apiResource('pays', PayController::class);
-    Route::apiResource('services', ServiceController::class);
-    Route::apiResource('membres', MembreController::class);
-});
 
